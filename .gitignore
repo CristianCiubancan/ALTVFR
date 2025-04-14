@@ -8,6 +8,8 @@ dist/
 resources/
 .astro/
 .output/
+_site/
+.docfx/
 
 # Alt:V server files
 altv-server*
@@ -54,6 +56,16 @@ coverage/
 .tmp/
 .temp/
 .cache/
+
+# Framework specific
+.astro
+altv-server
+altv-client
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.vercel
+.netlify
 
 # Yarn v2
 .yarn/cache

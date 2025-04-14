@@ -4,9 +4,14 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import readline from 'readline';
+import { ensurePluginsDirectory } from './plugin-loader.js';
+import { isWindows, getNpmRunCommand } from './platform-utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Ensure plugins directory exists
+ensurePluginsDirectory();
 
 // Get plugin name from command line arguments
 const pluginName = process.argv[2];
@@ -36,13 +41,18 @@ rl.question('Plugin description: ', (description) => {
       rl.question('Include client-side code? (y/n): ', (hasClient) => {
         rl.question('Include UI components? (y/n): ', (hasUI) => {
           // Create plugin
-          createPlugin(pluginName, {
-            description: description || `${pluginName} plugin for alt:V`,
-            author: author || 'Anonymous',
-            hasServer: hasServer.toLowerCase() === 'y',
-            hasClient: hasClient.toLowerCase() === 'y',
-            hasUI: hasUI.toLowerCase() === 'y'
-          });
+          try {
+            createPlugin(pluginName, {
+              description: description || `${pluginName} plugin for alt:V`,
+              author: author || 'Anonymous',
+              hasServer: hasServer.toLowerCase() === 'y',
+              hasClient: hasClient.toLowerCase() === 'y',
+              hasUI: hasUI.toLowerCase() === 'y'
+            });
+          } catch (error) {
+            console.error(`Error creating plugin: ${error.message}`);
+            process.exit(1);
+          }
           
           rl.close();
         });
@@ -203,29 +213,66 @@ body {
     
     // Create App.tsx
     const appPath = path.join(componentsDir, 'App.tsx');
-    const appTemplate = `import React from 'react';
+    const appTemplate = `import React, { useState, useEffect } from 'react';
 import { useAltV } from '@framework/ui/hooks/useAltV';
 
 export default function App() {
   const { isConnected, events } = useAltV();
+  const [clickCount, setClickCount] = useState(0);
+  
+  // Platform detection
+  const [platform, setPlatform] = useState<string>('unknown');
+  
+  useEffect(() => {
+    // Try to detect platform from user agent
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes('windows')) {
+      setPlatform('Windows');
+    } else if (userAgent.includes('linux')) {
+      setPlatform('Linux');
+    } else if (userAgent.includes('mac')) {
+      setPlatform('macOS');
+    }
+    
+    // Listen for click events from the client
+    if (isConnected) {
+      const unsubscribe = events.on('${name}:buttonResponse', () => {
+        setClickCount(prev => prev + 1);
+      });
+      
+      return () => unsubscribe();
+    }
+  }, [isConnected, events]);
   
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-altv-background/80 backdrop-blur-sm p-6 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-altv-primary">${name}</h1>
-        <p className="text-gray-300 mb-4">
+        <p className="text-gray-300 mb-2">
           {isConnected 
             ? 'Connected to alt:V' 
             : 'Not connected to alt:V - running in browser mode'}
+        </p>
+        <p className="text-gray-400 mb-4 text-sm">
+          Running on {platform}
         </p>
         <button
           className="bg-altv-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
             events.emit('${name}:buttonClicked');
+            if (!isConnected) {
+              // In browser mode, simulate the response
+              setClickCount(prev => prev + 1);
+            }
           }}
         >
           Click Me
         </button>
+        {clickCount > 0 && (
+          <p className="mt-4 text-green-400">
+            Button clicked {clickCount} {clickCount === 1 ? 'time' : 'times'}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -256,6 +303,11 @@ export default function Main() {
   console.log(`Plugin ${name} created successfully!`);
   console.log(`Next steps:`);
   console.log(`1. Customize your plugin code in plugins/${name}/`);
-  console.log(`2. Run \`npm run dev\` to start development server`);
-  console.log(`3. Run \`npm run build\` to build for production`);
+  
+  // Platform-specific commands
+  const devCommand = isWindows ? 'npm run dev' : 'npm run dev';
+  const buildCommand = isWindows ? 'npm run build' : 'npm run build';
+  
+  console.log(`2. Run \`${devCommand}\` to start development server`);
+  console.log(`3. Run \`${buildCommand}\` to build for production`);
 }

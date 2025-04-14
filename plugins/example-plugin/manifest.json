@@ -1,0 +1,20 @@
+{
+  "name": "example-plugin",
+  "version": "0.1.0",
+  "description": "Example plugin for Alt:V React Framework",
+  "author": "Alt:V React Framework Team",
+  "dependencies": {},
+  "entry": {
+    "server": "server.ts",
+    "client": "client.ts"
+  },
+  "ui": {
+    "main": "ui/index.tsx",
+    "routes": [
+      {
+        "path": "/example",
+        "component": "ui/components/ExampleComponent.tsx"
+      }
+    ]
+  }
+}

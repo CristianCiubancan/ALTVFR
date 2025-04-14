@@ -1,0 +1,107 @@
+/**
+ * Theme CSS variables
+ * Provides global theme variables for the UI
+ */
+
+:root {
+  /* Primary colors */
+  --color-primary: #3490dc;
+  --color-secondary: #ffed4a;
+  --color-accent: #f66d9b;
+  
+  /* UI colors */
+  --color-background: #1a202c;
+  --color-surface: #2d3748;
+  --color-error: #e53e3e;
+  --color-success: #38a169;
+  --color-warning: #ecc94b;
+  --color-info: #4299e1;
+  
+  /* Text colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cbd5e0;
+  --color-text-disabled: #718096;
+  
+  /* Typography */
+  --font-family-sans: 'Inter', sans-serif;
+  --font-family-mono: 'Fira Code', monospace;
+  
+  /* Font sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  
+  /* Spacing */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  
+  /* Border radius */
+  --border-radius-sm: 0.125rem;
+  --border-radius-md: 0.25rem;
+  --border-radius-lg: 0.5rem;
+  --border-radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-normal: 300ms;
+  --transition-slow: 500ms;
+  
+  /* Z-index */
+  --z-index-dropdown: 1000;
+  --z-index-modal: 1100;
+  --z-index-tooltip: 1200;
+}
+
+/* Dark mode variables */
+.dark {
+  --color-primary: #4299e1;
+  --color-background: #121826;
+  --color-surface: #1e293b;
+}
+
+/* Apply base styles */
+body {
+  font-family: var(--font-family-sans);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply TailwindCSS base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom component classes */
+@layer components {
+  .card {
+    @apply bg-opacity-80 backdrop-blur-sm p-6 rounded-lg shadow-lg;
+    background-color: var(--color-surface);
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    background-color: var(--color-primary);
+    @apply text-white hover:bg-blue-700;
+  }
+  
+  .input {
+    @apply bg-gray-700 text-white rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+}

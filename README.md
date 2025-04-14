@@ -18,6 +18,13 @@ A modular, hot-reloadable React plugin framework for Alt:V multiplayer.
 - npm or yarn
 - Alt:V server installation
 
+## Repository Status
+
+[![Lint Status](https://img.shields.io/badge/lint-passing-brightgreen)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)]()
+[![React](https://img.shields.io/badge/React-18.2-61dafb)]()
+[![License](https://img.shields.io/badge/license-MIT-green)]()
+
 ## Quick Start
 
 1. Clone this repository:
@@ -26,12 +33,44 @@ A modular, hot-reloadable React plugin framework for Alt:V multiplayer.
    cd altv-react-framework
    ```
 
-2. Install dependencies:
+2. Run the platform-specific setup script:
+
+   **Windows:**
    ```
+   windows-setup.cmd
+   ```
+
+   **Linux/macOS:**
+   ```
+   chmod +x linux-setup.sh
+   ./linux-setup.sh
+   ```
+
+   Or manually install dependencies:
+   ```
+   # Using npm
    npm install
+   
+   # OR using pnpm (recommended for better performance)
+   pnpm install
+   
+   # OR using yarn
+   yarn install
    ```
 
 3. Create your first plugin:
+
+   **Windows:**
+   ```
+   scripts\create-plugin.cmd my-plugin
+   ```
+
+   **Linux/macOS:**
+   ```
+   ./scripts/create-plugin.sh my-plugin
+   ```
+
+   **Any platform (npm):**
    ```
    npm run create-plugin my-plugin
    ```
@@ -51,20 +90,85 @@ A modular, hot-reloadable React plugin framework for Alt:V multiplayer.
    npm run start
    ```
 
+## Cross-Platform Compatibility
+
+This framework is designed to work on Windows, Linux, and macOS (for development).
+
+### Windows Notes
+
+If you encounter any path-related errors on Windows:
+
+1. Make sure you're using the latest Node.js LTS version (16+)
+2. Check that all required directories exist by running:
+   ```
+   npm run ensure-dirs
+   ```
+3. Try using pnpm instead of npm, which often handles Windows paths better:
+   ```
+   pnpm build
+   ```
+4. Use the provided Windows command scripts:
+   ```
+   scripts\create-plugin.cmd my-plugin
+   ```
+
+### Linux Notes
+
+1. Make sure to set executable permissions on the scripts:
+   ```bash
+   chmod +x scripts/*.sh
+   ```
+2. You can use the shell script version of the plugin creator:
+   ```bash
+   ./scripts/create-plugin.sh my-plugin
+   ```
+3. When running the Alt:V server, make sure the binary has proper permissions:
+   ```bash
+   chmod +x altv-server
+   ```
+
+### macOS Notes
+
+macOS is supported for development purposes only, as Alt:V server does not officially support macOS for hosting. You can still build resources and develop plugins on macOS that will be deployed to Windows or Linux servers.
+
+1. Follow the same steps as Linux for script permissions
+2. For testing the UI components locally:
+   ```bash
+   npm run dev:ui
+   ```
+
 ## Project Structure
+
+The framework follows a clean, organized, and maintainable structure:
 
 ```
 altv-react-framework/
 ├── package.json              # Root package with build scripts
 ├── tsconfig.json             # TypeScript configuration
-├── rollup.config.js          # Bundling configuration
-├── vite.config.ts            # Vite development server config
+├── rollup.server.config.js   # Server bundling configuration
+├── vite.client.config.ts     # Client bundling configuration
+├── astro.config.mjs          # Astro configuration
 ├── tailwind.config.js        # TailwindCSS configuration
 ├── postcss.config.js         # PostCSS for TailwindCSS
 ├── src/                      # Framework core functionality
-├── plugins/                  # Plugin modules
+│   ├── core/                 # Core framework code
+│   │   ├── common/           # Shared utilities and constants
+│   │   ├── plugin-system/    # Plugin management system
+│   │   ├── server/           # Server-side framework code
+│   │   └── client/           # Client-side framework code
+│   ├── ui/                   # UI framework components
+│   │   ├── components/       # Reusable React components
+│   │   ├── hooks/            # Custom React hooks
+│   │   └── styles/           # Global styles and themes
+│   ├── types/                # TypeScript type definitions
+│   └── tests/                # Framework tests
+├── plugins/                  # Plugin modules (example included)
+│   └── example-plugin/       # Example plugin implementation
+├── scripts/                  # Build and utility scripts
 └── resources/                # Built Alt:V resources (output)
 ```
+
+Each directory contains its own README.md with detailed documentation.
 
 ## Creating Plugins
 

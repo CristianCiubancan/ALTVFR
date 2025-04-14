@@ -5,22 +5,28 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development run-p dev:*",
+    "dev": "cross-env NODE_ENV=development run-s ensure-dirs && run-p dev:*",
     "dev:server": "node scripts/watch-server.js",
     "dev:client": "vite build --watch --config vite.client.config.ts",
     "dev:ui": "astro dev",
-    "build": "cross-env NODE_ENV=production run-s clean build:*",
+    "build": "cross-env NODE_ENV=production run-s clean ensure-dirs build:*",
+    "ensure-dirs": "node scripts/ensure-dirs.js",
     "build:server": "rollup -c rollup.server.config.js",
     "build:client": "vite build --config vite.client.config.ts",
     "build:ui": "astro build",
     "build:resources": "node scripts/build-resources.js",
     "start": "node scripts/start-server.js",
-    "clean": "rimraf resources/* dist/*",
-    "lint": "eslint --ext .ts,.tsx src plugins",
+    "clean": "rimraf \"resources\" \"dist\"",
+    "lint": "eslint --ext .ts,.tsx,.js src plugins scripts",
+    "lint:fix": "eslint --ext .ts,.tsx,.js src plugins scripts --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\" \"plugins/**/*.{ts,tsx,js,jsx,json,css}\"",
     "typecheck": "tsc --noEmit",
     "create-plugin": "node scripts/create-plugin.js",
     "build-plugin": "node scripts/build-plugin.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepare": "node scripts/ensure-dirs.js && node scripts/setup-husky.js",
+    "validate": "run-s lint typecheck test"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -60,13 +66,25 @@
     "eslint-plugin-astro": "^0.26.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.21",
+    "prettier": "^2.8.7",
     "rimraf": "^4.4.0",
     "rollup": "^3.20.2",
     "rollup-plugin-esbuild": "^5.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.2.1",
     "vitest": "^0.29.7"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
   }
 }
