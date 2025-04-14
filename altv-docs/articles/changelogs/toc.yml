@@ -1,0 +1,28 @@
+- name: Upcoming release
+  href: upcoming.md
+- name: Latest release
+  href: index.md
+- name: Release 15.0
+  href: 15_0.md
+- name: Release 14.0
+  href: 14_0.md
+- name: Release 13.0
+  href: 13_0.md
+- name: Release 12.0
+  href: 12_0.md
+- name: Release 11.0
+  href: 11_0.md
+- name: Release 10.0
+  href: 10_0.md
+- name: Release 9.0
+  href: 9_0.md
+- name: Release 8.0
+  href: 8_0.md
+- name: Release 7.0
+  href: 7_0.md
+- name: Release 6.0
+  href: 6_0.md
+- name: Release 4.0
+  href: 4_0.md
+- name: Release 2.2
+  href: 2_2.md
