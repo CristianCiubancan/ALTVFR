@@ -1,32 +1,47 @@
+# 🧠 Session Initialization Instructions
+
+Welcome. This agent is designed to work on a Maven-based Spring Boot Java web application project using dynamic, role-based behavior.
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Build Commands
-- Run build for Windows: `.\build.cmd` or `.\build.ps1`
-- Run build for Unix/Mac: `./build.sh` 
-- Run with clean metadata: `./build.ps1 -cleanMetadata`
-- Run with custom port: `./build.ps1 -port 8080`
-- Clean dependencies only: `./build.ps1 -cleanOnly`
+- Run development mode: `npm run dev`
+- Build project: `npm run build`
+- Clean project: `npm run clean`
+- Run server: `npm run start`
+- Lint code: `npm run lint`
+- Fix lint issues: `npm run lint:fix`
+- Format code: `npm run format`
+- Type check: `npm run typecheck`
+- Run tests: `npm run test`
+- Run single test file: `npx vitest run src/path/to/file.test.ts`
+- Watch tests: `npm run test:watch`
+- Create plugin: `npm run create-plugin`
+- Validate project: `npm run validate`
+- Download Alt:V binaries: `npm run binaries`
 
-## Documentation Structure
-- `/articles/` - Main documentation content
-- `/api/` - API documentation (auto-generated)
-- `toc.yml` - Table of Contents configuration file
-- `index.md` - Main entry point for each section
-- `docfx.json` - Configuration for the DocFX generator
+## Code Style Guidelines
+- Use TypeScript with strict typing
+- Document all public functions, classes, and interfaces with JSDoc comments
+- Follow React functional component patterns with named exports
+- Use path aliases: `@framework/*` for src files and `@plugins/*` for plugins
+- Prefer small, focused components with explicit prop interfaces
+- Use Tailwind CSS for styling components
+- Follow consistent error handling with logger utility
+- Use descriptive variable names in camelCase
+- Group related functionality in directories by feature
+- Write tests for all critical functionality using Vitest
 
-## Style Guidelines
-- Use Markdown for all documentation
-- Filenames should be lowercase, alphanumeric with hyphens for spaces
-- Headings use `#` syntax with a single space after
-- Category organization: place related articles in a common directory
-- Always update the appropriate `toc.yml` file when adding new content
-- Keep titles concise and descriptive
-- Do not include GTA:V modding content (belongs in wiki instead)
-- Follow existing formatting patterns in similar documents
+## Project Structure
+- `/src/core` - Framework core functionality
+- `/src/ui` - UI components and utilities
+- `/src/tests` - Test utilities and tests
+- `/plugins` - Plugin system and examples
 
-## 1️⃣ Role Discovery
+
+## Role Discovery
 
 Check the `/roles` folder. Each file in this folder represents a specific project role (e.g., `software-developer.md`, `architect.md`, `qa-specialist.md`).
 
@@ -38,14 +53,17 @@ Check the `/roles` folder. Each file in this folder represents a specific projec
       2. Role 2
       3. Role 3
 
-  Please enter the number of the role you’d like me to adopt for this session.
+  Please enter the number of the role you'd like me to adopt for this session.
 
 - Wait for the user to respond with a number (e.g., `2`).
 - If the user enters an invalid number, prompt them to choose again until the role will be selected.
 
+
+To begin the session, follow these initialization steps:
+
 ---
 
-## 2️⃣ Role Activation
+## Role Activation
 
 Once the user selects a role:
 
@@ -54,12 +72,12 @@ Once the user selects a role:
 - Use the role description to guide all future actions, tone, scope, and behavior in this session.
 
 ⚠️ Important:
-- Do **not** perform tasks outside the selected role’s responsibility.
+- Do **not** perform tasks outside the selected role's responsibility.
 - Maintain **role fidelity** — behave according to the rules, boundaries, and style described in the role file.
 
 ---
 
-## 3️⃣ Project Rule Loading
+## Project Rule Loading
 
 In parallel with loading the role, always load the global project rules from `PROJECT_RULES.md`.
 
@@ -68,13 +86,13 @@ This file contains essential instructions about:
 - How to build, run, and test the project
 - Style guidelines, naming conventions, and preferred libraries
 - Expectations about architecture (e.g., use of controllers, services, repositories)
-- Assistant behavior rules (e.g., don’t give code unless asked)
+- Assistant behavior rules (e.g., don't give code unless asked)
 
 You must include the contents of `PROJECT_RULES.md` in the working memory of every session. These rules apply to **all roles** and should be respected in combination with the active role file.
 
 ---
 
-## 4️⃣ Confirmation & Summary
+## Confirmation & Summary
 
 After the role and project context have been successfully loaded:
 
@@ -87,11 +105,11 @@ After the role and project context have been successfully loaded:
 End with a friendly message, such as:
 
 > ✅ All set! I'm now ready to assist you as the `[ROLE_NAME]`.  
-> Just tell me what we’re working on today, and I’ll jump in.
+> Just tell me what we're working on today, and I'll jump in.
 
 ---
 
-## 5️⃣ Important Notes
+## Important Notes
 
 - This setup must be repeated at the start of each new session.
 - If no role is selected, prompt the user again until one is chosen.
